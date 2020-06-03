@@ -1,0 +1,39 @@
+{
+  "name": "@thefirstspine/logs",
+  "version": "0.0.2",
+  "description": "Javascript and Typescript service to deliver unified logs. Works with Winstonjs.",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "peerDependencies": {},
+  "dependencies": {
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.9",
+    "@types/winston": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
+    "@typescript-eslint/parser": "^3.1.0",
+    "eslint": "^7.1.0",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.3"
+  },
+  "scripts": {
+    "build": "rimraf ./lib && tsc -b",
+    "test": "jest",
+    "lint": "eslint ./src/**/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thefirstspine/dependency-logs.git"
+  },
+  "author": "Teddy Gandon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thefirstspine/dependency-logs/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/thefirstspine/dependency-logs#readme"
+}
