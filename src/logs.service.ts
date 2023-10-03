@@ -10,34 +10,33 @@ export class LogsService {
   private static readonly LOG_LEVEL__ERROR: string = 'error';
 
   /**
-   * Default value of the logs file prefix
-   */
-  static readonly DEFAULT_LOGS_FILE_PREFIX: string = 'app';
-
-  /**
    * The Winston's logger
    */
   protected logger: winston.Logger;
 
-  constructor() {
-    // Gather log prefix
-    const logPrefix = process.env?.LOGS_FILE_PREFIX?.length > 0 ? process.env.LOGS_FILE_PREFIX : LogsService.DEFAULT_LOGS_FILE_PREFIX;
-
+  constructor(options: { console?: boolean } = { console: true }) {
+    // Gather transports
+    const transports = [
+      ...(options.console === true ? [
+        new winston.transports.Console({level: LogsService.LOG_LEVEL__INFO}),
+        new winston.transports.Console({level: LogsService.LOG_LEVEL__WARNING}),
+        new winston.transports.Console({level: LogsService.LOG_LEVEL__ERROR}),
+      ] : []),
+    ];
+    const exceptionHandlers = [
+      ...(options.console === true ? [
+        new winston.transports.Console({level: LogsService.LOG_LEVEL__INFO}),
+        new winston.transports.Console({level: LogsService.LOG_LEVEL__WARNING}),
+        new winston.transports.Console({level: LogsService.LOG_LEVEL__ERROR}),
+      ] : []),
+    ];
     this.logger = winston.createLogger({
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.printf((i: any) => `${i.timestamp}\t${i.level}\t${i.message}`),
       ),
-      transports: [
-        new winston.transports.File({ filename: `/var/log/${logPrefix}-error.log`, level: 'error' }),
-        new winston.transports.File({ filename:  `/var/log/${logPrefix}-warning.log`, level: 'warning' }),
-        new winston.transports.File({ filename:  `/var/log/${logPrefix}-info.log`, level: 'info' }),
-        new winston.transports.File({ filename:  `/var/log/${logPrefix}-combined.log` }),
-        new winston.transports.Console(),
-      ],
-      exceptionHandlers: [
-        new winston.transports.File({ filename:  `/var/log/${logPrefix}-exceptions.log` }),
-      ],
+      transports,
+      exceptionHandlers
     })
   }
 
