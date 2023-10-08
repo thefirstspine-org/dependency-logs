@@ -1,4 +1,4 @@
-import winston from 'winston';
+import winston, { Logger } from 'winston';
 
 /**
  * Main service to handle the logs in the TFS Platform.
@@ -14,20 +14,25 @@ export class LogsService {
    */
   protected logger: winston.Logger;
 
-  constructor(options: { console?: boolean } = { console: true }) {
+  constructor(options: { console?: boolean, postgres?: boolean } = { console: true }) {
+    // Load dependencies
+    const Postgres = require('@pauleliet/winston-pg-native');
+
     // Gather transports
     const transports = [
       ...(options.console === true ? [
         new winston.transports.Console({level: LogsService.LOG_LEVEL__INFO}),
-        new winston.transports.Console({level: LogsService.LOG_LEVEL__WARNING}),
-        new winston.transports.Console({level: LogsService.LOG_LEVEL__ERROR}),
+      ] : []),
+      ...(options.postgres === true ? [
+        new Postgres({level: LogsService.LOG_LEVEL__INFO, connectionString: `postgres://${process.env.LOGS_PG_USERNAME}:${process.env.LOGS_PG_PASSWORD}@${process.env.LOGS_PG_HOST}:${process.env.LOGS_PG_PORT}/${process.env.LOGS_PG_DATABASE}`}),
       ] : []),
     ];
     const exceptionHandlers = [
       ...(options.console === true ? [
-        new winston.transports.Console({level: LogsService.LOG_LEVEL__INFO}),
-        new winston.transports.Console({level: LogsService.LOG_LEVEL__WARNING}),
         new winston.transports.Console({level: LogsService.LOG_LEVEL__ERROR}),
+      ] : []),
+      ...(options.postgres === true ? [
+        new Postgres({level: LogsService.LOG_LEVEL__ERROR, connectionString: `postgres://${process.env.LOGS_PG_USERNAME}:${process.env.LOGS_PG_PASSWORD}@${process.env.LOGS_PG_HOST}:${process.env.LOGS_PG_PORT}/${process.env.LOGS_PG_DATABASE}`}),
       ] : []),
     ];
     this.logger = winston.createLogger({
@@ -65,6 +70,14 @@ export class LogsService {
    */
   error(message: string, data?: any): void {
     this.log(LogsService.LOG_LEVEL__ERROR, message, data);
+  }
+
+  /**
+   * Get Winston logger
+   * @returns The winston logger
+   */
+  getLogger(): Logger {
+    return this.logger;
   }
 
   /**

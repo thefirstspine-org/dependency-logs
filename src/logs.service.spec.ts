@@ -2,7 +2,7 @@ import {describe, expect, beforeEach, it} from '@jest/globals';
 import { LogsService } from './logs.service';
 
 describe('AuthService', () => {
-  let service;
+  let service: LogsService;
 
   beforeEach(async () => {
     service = new LogsService();
@@ -15,22 +15,32 @@ describe('AuthService', () => {
   it('should log to console with level "info"', async () => {
     const consoleSpy = jest.spyOn(console._stdout, 'write');
     service.info("test");
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 100));
     expect(consoleSpy).toHaveBeenCalled();
   });
 
   it('should log to console with level "warn"', async () => {
     const consoleSpy = jest.spyOn(console._stdout, 'write');
     service.warning("test");
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 100));
     expect(consoleSpy).toHaveBeenCalled();
   });
 
   it('should log to console with level "error"', async () => {
     const consoleSpy = jest.spyOn(console._stdout, 'write');
     service.error("test");
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 100));
     expect(consoleSpy).toHaveBeenCalled();
+  });
+
+  it('should have only PG transport', async () => {
+    service = new LogsService({postgres: true});
+    expect(service.getLogger().transports).toHaveLength(2);
+  });
+
+  it('should have both transports', async () => {
+    service = new LogsService({postgres: true, console: true});
+    expect(service.getLogger().transports).toHaveLength(4);
   });
 });
 
