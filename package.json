@@ -1,11 +1,10 @@
 {
   "name": "@thefirstspine/logs",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "description": "Javascript and Typescript service to deliver unified logs. Works with Winstonjs.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "dependencies": {
-    "@pauleliet/winston-pg-native": "^4.4.0",
     "logform": "^2.6.0",
     "winston": "^3.11.0"
   },

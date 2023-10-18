@@ -32,16 +32,6 @@ describe('AuthService', () => {
     await new Promise((r) => setTimeout(r, 100));
     expect(consoleSpy).toHaveBeenCalled();
   });
-
-  it('should have only PG transport', async () => {
-    service = new LogsService({postgres: true});
-    expect(service.getLogger().transports).toHaveLength(2);
-  });
-
-  it('should have both transports', async () => {
-    service = new LogsService({postgres: true, console: true});
-    expect(service.getLogger().transports).toHaveLength(4);
-  });
 });
 
 declare global {

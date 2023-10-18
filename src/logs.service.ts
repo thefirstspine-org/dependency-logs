@@ -14,25 +14,16 @@ export class LogsService {
    */
   protected logger: winston.Logger;
 
-  constructor(options: { console?: boolean, postgres?: boolean } = { console: true }) {
-    // Load dependencies
-    const Postgres = require('@pauleliet/winston-pg-native');
-
+  constructor(options: { console?: boolean } = { console: true }) {
     // Gather transports
     const transports = [
       ...(options.console === true ? [
         new winston.transports.Console({level: LogsService.LOG_LEVEL__INFO}),
       ] : []),
-      ...(options.postgres === true ? [
-        new Postgres({level: LogsService.LOG_LEVEL__INFO, connectionString: `postgres://${process.env.LOGS_PG_USERNAME}:${process.env.LOGS_PG_PASSWORD}@${process.env.LOGS_PG_HOST}:${process.env.LOGS_PG_PORT}/${process.env.LOGS_PG_DATABASE}`}),
-      ] : []),
     ];
     const exceptionHandlers = [
       ...(options.console === true ? [
         new winston.transports.Console({level: LogsService.LOG_LEVEL__ERROR}),
-      ] : []),
-      ...(options.postgres === true ? [
-        new Postgres({level: LogsService.LOG_LEVEL__ERROR, connectionString: `postgres://${process.env.LOGS_PG_USERNAME}:${process.env.LOGS_PG_PASSWORD}@${process.env.LOGS_PG_HOST}:${process.env.LOGS_PG_PORT}/${process.env.LOGS_PG_DATABASE}`}),
       ] : []),
     ];
     this.logger = winston.createLogger({
