@@ -32,6 +32,13 @@ describe('AuthService', () => {
     await new Promise((r) => setTimeout(r, 100));
     expect(consoleSpy).toHaveBeenCalled();
   });
+
+  it('should have 4 transports', async () => {
+    process.env.LOGS_LOGGLY_SUBDOMAIN = "-";
+    process.env.LOGS_LOGGLY_TOKEN = "-";
+    service = new LogsService({console: true, loggly: true});
+    expect(service.getLogger().transports).toHaveLength(4);
+  });
 });
 
 declare global {

@@ -14,16 +14,31 @@ export class LogsService {
    */
   protected logger: winston.Logger;
 
-  constructor(options: { console?: boolean } = { console: true }) {
+  constructor(options: { console?: boolean, loggly?: boolean } = { console: true }) {
     // Gather transports
+    const { Loggly } = require('winston-loggly-bulk');
     const transports = [
       ...(options.console === true ? [
         new winston.transports.Console({level: LogsService.LOG_LEVEL__INFO}),
+      ] : []),
+      ...(options.loggly === true ? [
+        new Loggly({
+          level: LogsService.LOG_LEVEL__INFO,
+          subdomain: process.env.LOGS_LOGGLY_SUBDOMAIN,
+          token: process.env.LOGS_LOGGLY_TOKEN,
+        }),
       ] : []),
     ];
     const exceptionHandlers = [
       ...(options.console === true ? [
         new winston.transports.Console({level: LogsService.LOG_LEVEL__ERROR}),
+      ] : []),
+      ...(options.loggly === true ? [
+        new Loggly({
+          level: LogsService.LOG_LEVEL__ERROR,
+          subdomain: process.env.LOGS_LOGGLY_SUBDOMAIN,
+          token: process.env.LOGS_LOGGLY_TOKEN,
+        }),
       ] : []),
     ];
     this.logger = winston.createLogger({
