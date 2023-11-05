@@ -3,13 +3,6 @@
 
 Javascript and Typescript service to deliver unified logs. Works with Winstonjs.
 
-Some files will be written in:
-- `/var/log/{logs prefix}-error.log` for errors
-- `/var/log/{logs prefix}-warning.log` for the warnings
-- `/var/log/{logs prefix}-info.log` for the infos
-- `/var/log/{logs prefix}-combined.log` for all the levels
-- Outputed in the `stdout` (for instance, Stackdriver will handle this)
-
 Each log has fixed parts that are separated with a tabulation character `\t`:
 
 ```
@@ -19,14 +12,6 @@ Each log has fixed parts that are separated with a tabulation character `\t`:
 `fullMessage` is a JSON object that has two properties:
 - `message` that is the main message of the log
 - `data` that is some data about the log (context for instance).
-
-## Configuration
-
-As part of TFS Platform, this dependency will use environment variable.
-
-| Environement key | Summary |
-|-|-|
-| LOGS_FILE_PREFIX | The prefix the logs files should have. |
 
 ## Install
 
