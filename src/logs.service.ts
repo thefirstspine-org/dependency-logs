@@ -14,9 +14,10 @@ export class LogsService {
    */
   protected logger: winston.Logger;
 
-  constructor(options: { console?: boolean, loggly?: boolean } = { console: true }) {
+  constructor(options: { console?: boolean, loggly?: boolean, datadog?: boolean } = { console: true }) {
     // Gather transports
     const { Loggly } = require('winston-loggly-bulk');
+    const DatadogWinston = require('datadog-winston');
     const transports = [
       ...(options.console === true ? [
         new winston.transports.Console({level: LogsService.LOG_LEVEL__INFO}),
@@ -27,6 +28,15 @@ export class LogsService {
           subdomain: process.env.LOGS_LOGGLY_SUBDOMAIN,
           token: process.env.LOGS_LOGGLY_TOKEN,
         }),
+      ] : []),
+      ...(options.datadog === true ? [
+        new DatadogWinston({
+          apiKey: process.env.LOGS_DD_API_KEY,
+          hostname: process.env.LOGS_DD_HOSTNAME ? process.env.LOGS_DD_HOSTNAME : 'default',
+          service: process.env.LOGS_DD_SERVICE ? process.env.LOGS_DD_SERVICE : 'default',
+          ddsource: 'nodejs',
+          ddtags: process.env.LOGS_DD_TAGS ? process.env.LOGS_DD_TAGS : ''
+        })
       ] : []),
     ];
     const exceptionHandlers = [
@@ -39,6 +49,15 @@ export class LogsService {
           subdomain: process.env.LOGS_LOGGLY_SUBDOMAIN,
           token: process.env.LOGS_LOGGLY_TOKEN,
         }),
+      ] : []),
+      ...(options.datadog === true ? [
+        new DatadogWinston({
+          apiKey: process.env.LOGS_DD_API_KEY,
+          hostname: process.env.LOGS_DD_HOSTNAME ? process.env.LOGS_DD_HOSTNAME : 'default',
+          service: process.env.LOGS_DD_SERVICE ? process.env.LOGS_DD_SERVICE : 'default',
+          ddsource: 'nodejs',
+          ddtags: process.env.LOGS_DD_TAGS ? process.env.LOGS_DD_TAGS : ''
+        })
       ] : []),
     ];
     this.logger = winston.createLogger({

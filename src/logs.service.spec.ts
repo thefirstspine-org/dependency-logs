@@ -39,6 +39,22 @@ describe('AuthService', () => {
     service = new LogsService({console: true, loggly: true});
     expect(service.getLogger().transports).toHaveLength(4);
   });
+
+  it('should have 4 transports', async () => {
+    process.env.LOGS_LOGGLY_SUBDOMAIN = "-";
+    process.env.LOGS_LOGGLY_TOKEN = "-";
+    process.env.LOGS_DD_API_KEY = "-";
+    service = new LogsService({console: true, datadog: true});
+    expect(service.getLogger().transports).toHaveLength(4);
+  });
+
+  it('should have 5 transports', async () => {
+    process.env.LOGS_LOGGLY_SUBDOMAIN = "-";
+    process.env.LOGS_LOGGLY_TOKEN = "-";
+    process.env.LOGS_DD_API_KEY = "-";
+    service = new LogsService({console: true, loggly: true, datadog: true});
+    expect(service.getLogger().transports).toHaveLength(6);
+  });
 });
 
 declare global {
