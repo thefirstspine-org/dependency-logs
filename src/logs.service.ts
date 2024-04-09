@@ -35,7 +35,8 @@ export class LogsService {
           hostname: process.env.LOGS_DD_HOSTNAME ? process.env.LOGS_DD_HOSTNAME : 'default',
           service: process.env.LOGS_DD_SERVICE ? process.env.LOGS_DD_SERVICE : 'default',
           ddsource: 'nodejs',
-          ddtags: process.env.LOGS_DD_TAGS ? process.env.LOGS_DD_TAGS : ''
+          ddtags: process.env.LOGS_DD_TAGS ? process.env.LOGS_DD_TAGS : '',
+          intakeRegion: 'eu',
         })
       ] : []),
     ];
@@ -56,7 +57,8 @@ export class LogsService {
           hostname: process.env.LOGS_DD_HOSTNAME ? process.env.LOGS_DD_HOSTNAME : 'default',
           service: process.env.LOGS_DD_SERVICE ? process.env.LOGS_DD_SERVICE : 'default',
           ddsource: 'nodejs',
-          ddtags: process.env.LOGS_DD_TAGS ? process.env.LOGS_DD_TAGS : ''
+          ddtags: process.env.LOGS_DD_TAGS ? process.env.LOGS_DD_TAGS : '',
+          intakeRegion: 'eu',
         })
       ] : []),
     ];

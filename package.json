@@ -1,6 +1,6 @@
 {
   "name": "@thefirstspine/logs",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "Javascript and Typescript service to deliver unified logs. Works with Winstonjs.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
