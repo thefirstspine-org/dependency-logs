@@ -1,14 +1,14 @@
 {
   "name": "@thefirstspine/logs",
-  "version": "7.0.2",
+  "version": "8.0.0",
   "description": "Javascript and Typescript service to deliver unified logs. Works with Winstonjs.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "dependencies": {
+    "axios": "^1.6.8",
     "datadog-winston": "^1.6.0",
     "logform": "^2.6.0",
-    "winston": "^3.13.0",
-    "winston-loggly-bulk": "^3.3.0"
+    "winston": "^3.13.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

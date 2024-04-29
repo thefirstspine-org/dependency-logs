@@ -1,4 +1,5 @@
 import winston, { Logger } from 'winston';
+import { LogglyWinston } from './loggly-winston';
 
 /**
  * Main service to handle the logs in the TFS Platform.
@@ -16,17 +17,16 @@ export class LogsService {
 
   constructor(options: { console?: boolean, loggly?: boolean, datadog?: boolean } = { console: true }) {
     // Gather transports
-    const { Loggly } = require('winston-loggly-bulk');
     const DatadogWinston = require('datadog-winston');
     const transports = [
       ...(options.console === true ? [
-        new winston.transports.Console({level: LogsService.LOG_LEVEL__INFO}),
+        new winston.transports.Console({}),
       ] : []),
       ...(options.loggly === true ? [
-        new Loggly({
-          level: LogsService.LOG_LEVEL__INFO,
+        new LogglyWinston({
           subdomain: process.env.LOGS_LOGGLY_SUBDOMAIN,
           token: process.env.LOGS_LOGGLY_TOKEN,
+          host: process.env.LOGS_LOGGLY_ENV ? process.env.LOGS_LOGGLY_HOST : 'default',
         }),
       ] : []),
       ...(options.datadog === true ? [
@@ -42,13 +42,13 @@ export class LogsService {
     ];
     const exceptionHandlers = [
       ...(options.console === true ? [
-        new winston.transports.Console({level: LogsService.LOG_LEVEL__ERROR}),
+        new winston.transports.Console({}),
       ] : []),
       ...(options.loggly === true ? [
-        new Loggly({
-          level: LogsService.LOG_LEVEL__ERROR,
+        new LogglyWinston({
           subdomain: process.env.LOGS_LOGGLY_SUBDOMAIN,
           token: process.env.LOGS_LOGGLY_TOKEN,
+          host: process.env.LOGS_LOGGLY_ENV ? process.env.LOGS_LOGGLY_HOST : 'default',
         }),
       ] : []),
       ...(options.datadog === true ? [
