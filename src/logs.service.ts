@@ -26,7 +26,7 @@ export class LogsService {
         new LogglyWinston({
           subdomain: process.env.LOGS_LOGGLY_SUBDOMAIN,
           token: process.env.LOGS_LOGGLY_TOKEN,
-          host: process.env.LOGS_LOGGLY_ENV ? process.env.LOGS_LOGGLY_HOST : 'default',
+          host: process.env.LOGS_LOGGLY_HOST ? process.env.LOGS_LOGGLY_HOST : 'default',
         }),
       ] : []),
       ...(options.datadog === true ? [
