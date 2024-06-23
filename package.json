@@ -5,23 +5,23 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "dependencies": {
-    "axios": "^1.6.8",
+    "axios": "^1.7.2",
     "datadog-winston": "^1.6.0",
     "logform": "^2.6.0",
     "winston": "^3.13.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.12.6",
+    "@types/node": "^20.14.8",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.6.0",
     "eslint": "^8.56.0",
     "jest": "^29.7.0",
-    "rimraf": "^5.0.5",
-    "ts-jest": "^29.1.2",
+    "rimraf": "^5.0.7",
+    "ts-jest": "^29.1.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.4"
+    "typescript": "^5.5.2"
   },
   "scripts": {
     "build": "rimraf ./lib && tsc -b",
