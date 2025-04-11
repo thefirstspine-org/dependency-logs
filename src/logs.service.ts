@@ -24,9 +24,9 @@ export class LogsService {
       ] : []),
       ...(options.loggly === true ? [
         new LogglyWinston({
-          subdomain: process.env.LOGS_LOGGLY_SUBDOMAIN,
+          service: process.env.LOGS_LOGGLY_SERVICE,
           token: process.env.LOGS_LOGGLY_TOKEN,
-          host: process.env.LOGS_LOGGLY_HOST ? process.env.LOGS_LOGGLY_HOST : 'default',
+          hostname: process.env.LOGS_LOGGLY_HOSTNAME ? process.env.LOGS_LOGGLY_HOSTNAME : 'default',
         }),
       ] : []),
       ...(options.datadog === true ? [
@@ -46,9 +46,9 @@ export class LogsService {
       ] : []),
       ...(options.loggly === true ? [
         new LogglyWinston({
-          subdomain: process.env.LOGS_LOGGLY_SUBDOMAIN,
+          service: process.env.LOGS_LOGGLY_SERVICE,
           token: process.env.LOGS_LOGGLY_TOKEN,
-          host: process.env.LOGS_LOGGLY_HOST ? process.env.LOGS_LOGGLY_HOST : 'default',
+          hostname: process.env.LOGS_LOGGLY_HOSTNAME ? process.env.LOGS_LOGGLY_HOSTNAME : 'default',
         }),
       ] : []),
       ...(options.datadog === true ? [

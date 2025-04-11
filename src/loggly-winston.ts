@@ -8,15 +8,15 @@ import axios from 'axios';
 export class LogglyWinston extends Transport {
   private static MAX_TRIES = 10;
 
-  private host: string;
+  private hostname: string;
   private token: string;
-  private subdomain: string;
+  private service: string;
 
   constructor(opts) {
     super(opts);
-    this.host = opts.host;
+    this.hostname = opts.hostname;
     this.token = opts.token;
-    this.subdomain = opts.subdomain;
+    this.service = opts.service;
   }
 
   log(info: {level: string, message: string, timestamp: string}, callback) {
@@ -37,8 +37,8 @@ export class LogglyWinston extends Transport {
     } catch(e) {}
 
     axios.post(`https://logs-01.loggly.com/inputs/${this.token}/tag/http/`, {
-      host: this.host,
-      subdomain: this.subdomain,
+      hostname: this.hostname,
+      service: this.service,
       level: info.level,
       timestamp: info.timestamp,
       message: info.message,
