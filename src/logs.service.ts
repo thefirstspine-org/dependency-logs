@@ -1,5 +1,6 @@
 import winston, { Logger } from 'winston';
 import { LogglyWinston } from './loggly-winston';
+import { BetterStackWinston } from './better-stack-winston';
 
 /**
  * Main service to handle the logs in the TFS Platform.
@@ -15,7 +16,7 @@ export class LogsService {
    */
   protected logger: winston.Logger;
 
-  constructor(options: { console?: boolean, loggly?: boolean, datadog?: boolean } = { console: true }) {
+  constructor(options: { console?: boolean, loggly?: boolean, datadog?: boolean, betterStack?: boolean } = { console: true }) {
     // Gather transports
     const DatadogWinston = require('datadog-winston');
     const transports = [
@@ -37,6 +38,11 @@ export class LogsService {
           ddsource: 'nodejs',
           ddtags: process.env.LOGS_DD_TAGS ? process.env.LOGS_DD_TAGS : '',
           intakeRegion: 'eu',
+        })
+      ] : []),
+      ...(options.betterStack === true ? [
+        new BetterStackWinston({
+          service: process.env.LOGS_BETTERSTACK_SERVICE,
         })
       ] : []),
     ];
