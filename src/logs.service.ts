@@ -16,65 +16,23 @@ export class LogsService {
    */
   protected logger: winston.Logger;
 
-  constructor(options: { console?: boolean, loggly?: boolean, datadog?: boolean, betterStack?: boolean } = { console: true }) {
+  constructor() {
     // Gather transports
-    const DatadogWinston = require('datadog-winston');
-    const transports = [
-      ...(options.console === true ? [
-        new winston.transports.Console({}),
-      ] : []),
-      ...(options.loggly === true ? [
-        new LogglyWinston({
-          service: process.env.LOGS_LOGGLY_SERVICE,
-          token: process.env.LOGS_LOGGLY_TOKEN,
-          hostname: process.env.LOGS_LOGGLY_HOSTNAME ? process.env.LOGS_LOGGLY_HOSTNAME : 'default',
-        }),
-      ] : []),
-      ...(options.datadog === true ? [
-        new DatadogWinston({
-          apiKey: process.env.LOGS_DD_API_KEY,
-          hostname: process.env.LOGS_DD_HOSTNAME ? process.env.LOGS_DD_HOSTNAME : 'default',
-          service: process.env.LOGS_DD_SERVICE ? process.env.LOGS_DD_SERVICE : 'default',
-          ddsource: 'nodejs',
-          ddtags: process.env.LOGS_DD_TAGS ? process.env.LOGS_DD_TAGS : '',
-          intakeRegion: 'eu',
-        })
-      ] : []),
-      ...(options.betterStack === true ? [
-        new BetterStackWinston({
-          service: process.env.LOGS_BETTERSTACK_SERVICE,
-        })
-      ] : []),
-    ];
-    const exceptionHandlers = [
-      ...(options.console === true ? [
-        new winston.transports.Console({}),
-      ] : []),
-      ...(options.loggly === true ? [
-        new LogglyWinston({
-          service: process.env.LOGS_LOGGLY_SERVICE,
-          token: process.env.LOGS_LOGGLY_TOKEN,
-          hostname: process.env.LOGS_LOGGLY_HOSTNAME ? process.env.LOGS_LOGGLY_HOSTNAME : 'default',
-        }),
-      ] : []),
-      ...(options.datadog === true ? [
-        new DatadogWinston({
-          apiKey: process.env.LOGS_DD_API_KEY,
-          hostname: process.env.LOGS_DD_HOSTNAME ? process.env.LOGS_DD_HOSTNAME : 'default',
-          service: process.env.LOGS_DD_SERVICE ? process.env.LOGS_DD_SERVICE : 'default',
-          ddsource: 'nodejs',
-          ddtags: process.env.LOGS_DD_TAGS ? process.env.LOGS_DD_TAGS : '',
-          intakeRegion: 'eu',
-        })
-      ] : []),
-    ];
     this.logger = winston.createLogger({
       format: winston.format.combine(
         winston.format.timestamp(),
-        winston.format.printf((i: any) => `${i.timestamp}\t${i.level}\t${i.message}`),
+        winston.format.printf((i: any) => JSON.stringify({
+          ...i,
+          timestamp: i.timestamp,
+          level: i.level,
+          message: i.message,
+          service: process.env.SERVICE ? process.env.SERVICE : 'unknown',
+          env: process.env.ENV ? process.env.ENV : 'unknown',
+          data: i.data,
+        }))
       ),
-      transports,
-      exceptionHandlers
+      transports: new winston.transports.Console(),
+      exceptionHandlers: new winston.transports.Console(),
     })
   }
 
@@ -120,10 +78,10 @@ export class LogsService {
    * @param data
    */
   protected log(level: string, message: string, data?: any): void {
-    this.logger.log(level, JSON.stringify({
+    this.logger.log(level, {
       message,
       data,
-    }));
+    });
   }
 
 }
