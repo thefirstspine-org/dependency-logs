@@ -32,6 +32,20 @@ describe('AuthService', () => {
     await new Promise((r) => setTimeout(r, 100));
     expect(consoleSpy).toHaveBeenCalled();
   });
+
+  it('should log to console with level "http"', async () => {
+    const consoleSpy = jest.spyOn(console._stdout, 'write');
+    service.http("test", {some: "data"});
+    await new Promise((r) => setTimeout(r, 100));
+    expect(consoleSpy).toHaveBeenCalled();
+  });
+
+  it('should log to console with level "debug"', async () => {
+    const consoleSpy = jest.spyOn(console._stdout, 'write');
+    service.debug("test", {some: "data"});
+    await new Promise((r) => setTimeout(r, 100));
+    expect(consoleSpy).toHaveBeenCalled();
+  });
 });
 
 declare global {

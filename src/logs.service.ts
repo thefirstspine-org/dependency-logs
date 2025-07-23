@@ -1,6 +1,4 @@
 import winston, { Logger } from 'winston';
-import { LogglyWinston } from './loggly-winston';
-import { BetterStackWinston } from './better-stack-winston';
 
 /**
  * Main service to handle the logs in the TFS Platform.
@@ -8,6 +6,7 @@ import { BetterStackWinston } from './better-stack-winston';
 export class LogsService {
 
   private static readonly LOG_LEVEL__DEBUG: string = 'debug';
+  private static readonly LOG_LEVEL__HTTP: string = 'http';
   private static readonly LOG_LEVEL__INFO: string = 'info';
   private static readonly LOG_LEVEL__WARNING: string = 'warn';
   private static readonly LOG_LEVEL__ERROR: string = 'error';
@@ -32,8 +31,8 @@ export class LogsService {
           data: i.data,
         }))
       ),
-      transports: new winston.transports.Console(),
-      exceptionHandlers: new winston.transports.Console(),
+      transports: new winston.transports.Console({ level: LogsService.LOG_LEVEL__DEBUG }),
+      exceptionHandlers: new winston.transports.Console({ level: LogsService.LOG_LEVEL__DEBUG }),
     })
   }
 
@@ -44,6 +43,15 @@ export class LogsService {
    */
   debug(message: string, data?: any): void {
     this.log(LogsService.LOG_LEVEL__DEBUG, message, data);
+  }
+
+  /**
+   * Log a debug message. An information is has only a purpose for debugging.
+   * @param message The message to log.
+   * @param data The data about the log (context for instance).
+   */
+  http(message: string, data?: any): void {
+    this.log(LogsService.LOG_LEVEL__HTTP, message, data);
   }
 
   /**
