@@ -1,6 +1,6 @@
 {
   "name": "@thefirstspine/logs",
-  "version": "12.0.2",
+  "version": "12.0.3",
   "description": "Javascript and Typescript service to deliver unified logs. Works with Winstonjs.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -12,14 +12,14 @@
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.6.2",
+    "@types/node": "^24.7.2",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.6.0",
     "eslint": "^8.56.0",
     "jest": "^30.2.0",
     "rimraf": "^6.0.1",
-    "ts-jest": "^29.4.4",
+    "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
