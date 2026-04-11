@@ -1,7 +1,7 @@
-import {describe, expect, beforeEach, it} from '@jest/globals';
+import {describe, expect, beforeEach, it, jest} from '@jest/globals';
 import { LogsService } from './logs.service';
 
-describe('AuthService', () => {
+describe('LogsService', () => {
   let service: LogsService;
 
   beforeEach(async () => {
